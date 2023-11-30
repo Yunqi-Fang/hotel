@@ -6,7 +6,7 @@ CORS(app)
 
 @app.route("/")
 def hello_world():
-    return "<p>Hello, World!</p>"
+    return "<p>Hello, World! new</p>"
 
 if __name__=="__main__":
     app.run(host="127.0.0.1", debug=True)   #调用run方法，设定端口号，启动服务

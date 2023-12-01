@@ -1,6 +1,10 @@
+from flask import jsonify
 from pymysql import connect
 from pymysql.cursors import DictCursor
+from sqlalchemy import null
+
 from settings import MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE
+
 
 
 class User(object):
@@ -25,3 +29,24 @@ class User(object):
         for temp in self.cursor.fetchall():
             user_info_list.append(temp)
         return user_info_list
+
+    def user_login(self, username):
+        sql = "SELECT password, role, hotelid FROM user WHERE username = %s"
+        val = (username)
+        self.cursor.execute(sql, val)
+        dbUser = self.cursor.fetchone()
+        # 验证密码是否匹配
+        if dbUser:
+            return dbUser
+        else:
+            return null
+
+    def user_register(self, username, password, role, hotelid):
+        sql = "INSERT INTO user (username, password, role, hotelid) VALUES (%s, %s, %s, %s)"
+        val = (username, password, role, hotelid)
+        self.cursor.execute(sql, val)
+        self.conn.commit()
+        if self.cursor.rowcount > 0:
+            return True
+        else:
+            return False

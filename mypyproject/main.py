@@ -133,34 +133,6 @@ def add():
     return make_response(res)
 
 
-# 修改酒店信息：第一个参数为酒店id，第二个参数为酒店工作人员所属酒店id，判断两者是否相同
-@app.route("/changehotelinfo/<hotelid>/<userhotelid>", methods=['POST', 'GET'])
-def changehotelinfo(hotelid, userhotelid):
-    if hotelid == userhotelid:
-        hotel = Hotel()
-        getJson = request.get_json()
-        hoteldict = dict(getJson)
-        ans = hotel.change_hotel_info(hotelid, hoteldict)
-        if ans:
-            hoteldict["hotelid"] = hotelid
-            res = {
-                "code": 200,
-                "data": hoteldict,
-                "messege": "修改成功"
-            }
-        else:
-            res = {
-                "code": 500,
-                "data": hoteldict,
-                "messege": "修改失败,未进行改动"
-            }
-    else:
-        res = {
-            "code": 500,
-            "data": '',
-            "messege": "只能处理所属酒店的工作"
-        }
-    return make_response(res)
 
 
 # 新增客房
